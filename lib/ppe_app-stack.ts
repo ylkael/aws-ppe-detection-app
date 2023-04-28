@@ -6,6 +6,8 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as subs from 'aws-cdk-lib/aws-sns-subscriptions';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 export class PpeAppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -55,5 +57,15 @@ export class PpeAppStack extends cdk.Stack {
     processImage.addEnvironment('HEADCOVER', 'true');
     processImage.addEnvironment('FACECOVER', 'true');
     processImage.addEnvironment('HANDCOVER', 'true');
+    
+    // Event subscription for S3 bucket
+    inputbucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.LambdaDestination(processImage));
+    
+    // IAM policies for Lambda function
+    inputbucket.grantRead(processImage); // read access to S3 bucket
+    dynamodbtable.grantWriteData(processImage); // write access to DynamoDB table
+    snsTopic.grantPublish(processImage); // publish access to SNS topic
+    processImage.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonRekognitionReadOnlyAccess')); // Rekognition read access IAM role
+
   }
 }
