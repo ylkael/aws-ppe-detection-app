@@ -9,6 +9,14 @@ import * as path from 'path';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
 import * as iam from 'aws-cdk-lib/aws-iam';
 
+// Interface to pass parameters to stack
+interface PpeAppStackProps extends cdk.StackProps {
+  snsNotificationEmail: string;
+  DETECTHEADCOVER: boolean;
+  DETECTFACECOVER: boolean;
+  DETECTHANDCOVER: boolean;
+}
+
 export class PpeAppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
