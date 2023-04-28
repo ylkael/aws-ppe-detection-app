@@ -40,7 +40,7 @@ export class PpeAppStack extends cdk.Stack {
     // SNS topic to notify PPE detection failure via email
     const snsTopic = new sns.Topic(this, 'SNSNotification', {
       displayName: 'PPE Detection Failure',
-      topicName: 'PPE-Failure-Topic'
+      topicName: this.stackName + '-PPE-Failure-Topic'
     });
     
     // Parameter to specify email address for subscription notifications
