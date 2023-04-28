@@ -27,10 +27,18 @@ export class PpeAppStack extends cdk.Stack {
 
     // SNS topic to notify PPE detection failure via email
     const snsTopic = new sns.Topic(this, 'SNSNotification', {
-      displayName: 'PPE Failure Topic',
+      displayName: 'PPE Detection Failure',
       topicName: 'PPE-Failure-Topic'
     });
-    snsTopic.addSubscription(new subs.EmailSubscription('YOUR_EMAIL_ADDRESS'));
+
+    // Parameter to specify email address to receive PPE failure notifications
+    const email = new cdk.CfnParameter(this, 'email', {
+      type: 'String',
+      description: 'Email address to receive PPE failure notifications'
+    });
+
+    // Subscribe to SNS topic to receive PPE failure notifications via email
+    snsTopic.addSubscription(new subs.EmailSubscription(email.valueAsString));
 
   }
 }
