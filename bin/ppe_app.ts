@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { PpeAppStack } from '../lib/ppe_app-stack';
+import { PpeAppStack } from '../lib/ppe-app-stack';
 
 const app = new cdk.App();
 
