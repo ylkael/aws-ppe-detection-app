@@ -20,8 +20,6 @@ Detects if workers are wearing 3 equipments:
 &nbsp;
 
 ---
-&nbsp;
-
 
 ## Content  
 
@@ -40,24 +38,22 @@ Defines Stacks for Pharmacy and Workshop
 &nbsp;
 
 ---
-&nbsp;
 
 ## Usage  
 
 After deploying the stacks, confirm the subscription emails for Pharmacy and Workshop Topics.  
 
-**Pharmacy-Stack** sends alerts via email if the **face** and/or **hand** is **not** detected in the photo.  
+**Pharmacy-Stack** sends alerts via email if the **face** and/or **hand** cover is **not** detected in the photo.  
 
 **Workshop-Stack** sends alerts if **head**, **face** and/or **hand** cover is **not** detected in the photo.  
 
 Upload an image to either Pharmacy-Stack S3-bucket or Workshop-Stack S3-bucket to check if the person is wearing needed equipment.  
 
-If you upload an image with head cover, face cover and hand cover you would not get any notification in any stack.  
+If you upload an image with head cover, face cover **and** hand cover you would not get any notification in any stack.  
 
 &nbsp;
 
 ---
-&nbsp;
 
 ## Costs  
 
@@ -73,6 +69,5 @@ You will incur the standard costs for each of the AWS services which are utilize
 &nbsp;
 
 ---
-&nbsp;
 
 More info and step-by-step guide: [AWS Workshop Studio](https://catalog.us-east-1.prod.workshops.aws/workshops/caa8dcf9-4867-438a-a737-c2eb409f31c9/en-US )  
