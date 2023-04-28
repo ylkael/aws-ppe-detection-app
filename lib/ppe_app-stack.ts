@@ -52,8 +52,8 @@ export class PpeAppStack extends cdk.Stack {
     // Environment variables for Lambda function
     processImage.addEnvironment('TABLE_NAME', dynamodbtable.tableName);
     processImage.addEnvironment('SNS_TOPIC', snsTopic.topicArn);
-    processImage.addEnvironment('HEADCOVER','true');
-    processImage.addEnvironment('FACECOVER','true');
-    processImage.addEnvironment('HANDCOVER','true');
+    processImage.addEnvironment('HEADCOVER', 'true');
+    processImage.addEnvironment('FACECOVER', 'true');
+    processImage.addEnvironment('HANDCOVER', 'true');
   }
 }
