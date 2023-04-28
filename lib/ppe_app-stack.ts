@@ -18,7 +18,7 @@ interface PpeAppStackProps extends cdk.StackProps {
 }
 
 export class PpeAppStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: PpeAppStackProps) {
     super(scope, id, props);
   
     // S3 bucket for storing image input
@@ -42,15 +42,7 @@ export class PpeAppStack extends cdk.Stack {
       displayName: 'PPE Detection Failure',
       topicName: 'PPE-Failure-Topic'
     });
-
-    // Parameter to specify email address to receive PPE failure notifications
-    const email = new cdk.CfnParameter(this, 'email', {
-      type: 'String',
-      description: 'Email address to receive PPE failure notifications'
-    });
-
-    // Subscribe to SNS topic to receive PPE failure notifications via email
-    snsTopic.addSubscription(new subs.EmailSubscription(email.valueAsString));
+    snsTopic.addSubscription(new subs.EmailSubscription(props.snsNotificationEmail));
 
     // Lambda function to detect PPE
     const processImage = new lambda.Function(this, 'ProcessImageFunction', {
@@ -62,9 +54,9 @@ export class PpeAppStack extends cdk.Stack {
     // Environment variables for Lambda function
     processImage.addEnvironment('TABLE_NAME', dynamodbtable.tableName);
     processImage.addEnvironment('SNS_TOPIC', snsTopic.topicArn);
-    processImage.addEnvironment('HEADCOVER', 'true');
-    processImage.addEnvironment('FACECOVER', 'true');
-    processImage.addEnvironment('HANDCOVER', 'true');
+    processImage.addEnvironment('HEADCOVER', props.DETECTHEADCOVER.toString());
+    processImage.addEnvironment('FACECOVER', props.DETECTFACECOVER.toString());
+    processImage.addEnvironment('HANDCOVER', props.DETECTHANDCOVER.toString());
     
     // Event subscription for S3 bucket
     inputbucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3n.LambdaDestination(processImage));
