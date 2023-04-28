@@ -4,6 +4,8 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as subs from 'aws-cdk-lib/aws-sns-subscriptions';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as path from 'path';
 
 export class PpeAppStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -40,5 +42,18 @@ export class PpeAppStack extends cdk.Stack {
     // Subscribe to SNS topic to receive PPE failure notifications via email
     snsTopic.addSubscription(new subs.EmailSubscription(email.valueAsString));
 
+    // Lambda function to detect PPE
+    const processImage = new lambda.Function(this, 'ProcessImageFunction', {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: 'processimage.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
+    });
+
+    // Environment variables for Lambda function
+    processImage.addEnvironment('TABLE_NAME', dynamodbtable.tableName);
+    processImage.addEnvironment('SNS_TOPIC', snsTopic.topicArn);
+    processImage.addEnvironment('HEADCOVER','true');
+    processImage.addEnvironment('FACECOVER','true');
+    processImage.addEnvironment('HANDCOVER','true');
   }
 }
