@@ -19,8 +19,6 @@ Detects if workers are wearing 3 equipments:
 
 &nbsp;
 
----
-
 ## Content  
 
 * `lib/ppe-app-stack.ts`  
@@ -34,8 +32,6 @@ The Lambda code will be invoked when a file is written to s3 bucket. This code w
 
 * `bin/ppe_app.ts`  
 Defines Stacks for Pharmacy and Workshop  
-
-&nbsp;
 
 ---
 
@@ -51,8 +47,6 @@ Upload an image to either Pharmacy-Stack S3-bucket or Workshop-Stack S3-bucket t
 
 If you upload an image with head cover, face cover **and** hand cover you would not get any notification in any stack.  
 
-&nbsp;
-
 ---
 
 ## Costs  
@@ -65,8 +59,6 @@ You will incur the standard costs for each of the AWS services which are utilize
 * Amazon SNS : <https://aws.amazon.com/sns/pricing>  
 * Amazon Translate : <https://aws.amazon.com/translate/pricing/>  
 * Amazon S3 : <https://aws.amazon.com/s3/pricing/>  
-
-&nbsp;
 
 ---
 
