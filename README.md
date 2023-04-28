@@ -1,17 +1,17 @@
 # PPE Detection App
 
-This app detects Personal Protective Equipment (PPE) in the images added in s3 bucket using Amazon Rekognition. SNS email notification will be send if PPE is not detected. Application will have logic to determine what kind of PPE needs to be detected. This includes head cover, facemask and hand cover.  
+This app detects Personal Protective Equipment (PPE) in the images added in s3 bucket using Amazon Rekognition. SNS email notification will be send if PPE is not detected. Application will have logic to determine what kind of PPE needs to be detected. This includes head cover, face cover and hand cover.  
 
-App uses 2 stacks with detection rules:  
+App uses 2 stacks with different detection rules:  
 
 1. "Pharmacy"  
-Represents a medical pharmacy  
+Represents a medical pharmacy.  
 Detects if workers are wearing 2 equipments:
     * Face cover
     * Hand cover
 
 2. "Workshop"  
-Represents a physical workshop or a garage  
+Represents a physical workshop or a garage.  
 Detects if workers are wearing 3 equipments:  
     * Head cover  
     * Face cover  
@@ -35,13 +35,18 @@ The Lambda code will be invoked when a file is written to s3 bucket. This code w
 * `bin/ppe_app.ts`  
 Defines Stacks for Pharmacy and Workshop  
 
+&nbsp;
+
+---
+
 ## Usage  
 
-After deploying the stacks, confirm the SNS subscriptions for Pharmacy and Workshop Topics.  
+After deploying the stacks, confirm the subscription emails for Pharmacy and Workshop Topics.  
 
-Pharmacystack sends alerts via email if the face-cover and/or hand-cover is not detected in the photo.  
-Workshopstack sends alerts if head cover, face cover and/or hand cover is not detected in the photo.  
+**Pharmacy-Stack** sends alerts via email if the **face** and/or **hand** is **not** detected in the photo.  
 
-Upload an image to either Pharmacystack S3-bucket or Workshopstack S3-bucket to check if the person is wearing proper equipment.  
+**Workshop-Stack** sends alerts if **head**, **face** and/or **hand** cover is **not** detected in the photo.  
+
+Upload an image to either Pharmacy-Stack S3-bucket or Workshop-Stack S3-bucket to check if the person is wearing needed equipment.  
 
 If you upload an image with head cover, face cover and hand cover you would not get any notification in any stack.  
