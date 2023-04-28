@@ -11,7 +11,6 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 
 // Interface to pass parameters to stack
 interface PpeAppStackProps extends cdk.StackProps {
-  snsNotificationEmail: string;
   DETECTHEADCOVER: boolean;
   DETECTFACECOVER: boolean;
   DETECTHANDCOVER: boolean;
@@ -37,12 +36,19 @@ export class PpeAppStack extends cdk.Stack {
       },
     });
 
+    
     // SNS topic to notify PPE detection failure via email
     const snsTopic = new sns.Topic(this, 'SNSNotification', {
       displayName: 'PPE Detection Failure',
       topicName: 'PPE-Failure-Topic'
     });
-    snsTopic.addSubscription(new subs.EmailSubscription(props.snsNotificationEmail));
+    
+    // Parameter to specify email address for subscription notifications
+    const email = new cdk.CfnParameter(this, 'email', {
+      type: 'String',
+      description: 'Email address to receive PPE failure notifications'
+    });
+    snsTopic.addSubscription(new subs.EmailSubscription(email.valueAsString));
 
     // Lambda function to detect PPE
     const processImage = new lambda.Function(this, 'ProcessImageFunction', {
