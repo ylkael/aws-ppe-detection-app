@@ -35,7 +35,6 @@ export class PpeAppStack extends cdk.Stack {
         type: dynamodb.AttributeType.STRING 
       },
     });
-
     
     // SNS topic to notify PPE detection failure via email
     const snsTopic = new sns.Topic(this, 'SNSNotification', {
