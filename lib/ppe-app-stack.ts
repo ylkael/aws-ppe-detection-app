@@ -17,6 +17,7 @@ interface PpeAppStackProps extends cdk.StackProps {
 }
 
 export class PpeAppStack extends cdk.Stack {
+  public readonly snsTopic: sns.Topic;
   constructor(scope: Construct, id: string, props: PpeAppStackProps) {
     super(scope, id, props);
   
@@ -37,7 +38,7 @@ export class PpeAppStack extends cdk.Stack {
     });
     
     // SNS topic to notify PPE detection failure via email
-    const snsTopic = new sns.Topic(this, 'SNSNotification', {
+    this.snsTopic = new sns.Topic(this, 'SNSNotification', {
       displayName: 'PPE Detection Failure',
       topicName: this.stackName + '-PPE-Failure-Topic'
     });
@@ -47,7 +48,7 @@ export class PpeAppStack extends cdk.Stack {
       type: 'String',
       description: 'Email address to receive PPE failure notifications'
     });
-    snsTopic.addSubscription(new subs.EmailSubscription(email.valueAsString));
+    this.snsTopic.addSubscription(new subs.EmailSubscription(email.valueAsString));
 
     // Lambda function to detect PPE
     const processImage = new lambda.Function(this, 'ProcessImageFunction', {
@@ -58,7 +59,7 @@ export class PpeAppStack extends cdk.Stack {
 
     // Environment variables for Lambda function
     processImage.addEnvironment('TABLE_NAME', dynamodbtable.tableName);
-    processImage.addEnvironment('SNS_TOPIC', snsTopic.topicArn);
+    processImage.addEnvironment('SNS_TOPIC', this.snsTopic.topicArn);
     processImage.addEnvironment('HEADCOVER', props.DETECTHEADCOVER.toString());
     processImage.addEnvironment('FACECOVER', props.DETECTFACECOVER.toString());
     processImage.addEnvironment('HANDCOVER', props.DETECTHANDCOVER.toString());
@@ -69,7 +70,7 @@ export class PpeAppStack extends cdk.Stack {
     // IAM policies for Lambda function
     inputbucket.grantRead(processImage); // read access to S3 bucket
     dynamodbtable.grantWriteData(processImage); // write access to DynamoDB table
-    snsTopic.grantPublish(processImage); // publish access to SNS topic
+    this.snsTopic.grantPublish(processImage); // publish access to SNS topic
     processImage.role?.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonRekognitionReadOnlyAccess')); // Rekognition read access IAM role
 
   }
