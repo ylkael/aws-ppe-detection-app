@@ -28,7 +28,7 @@ export class PpeAppStack extends cdk.Stack {
     });
 
     // DynamoDB table for storing image processing result
-    const dynamodbtable = new dynamodb.Table(this, 'ResultTable', {
+    const dynamodbtable = new dynamodb.Table(this, 'ImageResultTable', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       partitionKey: { 
         name: 'id', 
