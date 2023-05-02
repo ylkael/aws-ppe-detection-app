@@ -30,6 +30,10 @@ Note: the email for SNS is applied via parameter.
 Defines the logic for PPE detection:  
 The Lambda code will be invoked when a file is written to s3 bucket. This code will call AWS Rekognition API and store the result in AWS Dynamodb table. After that, based on the Lambda environment variables, decide to send notification via SNS.  
 
+* `lambda/translator.js`  
+Defines language translator:  
+The lambda function will read the message from SNS topic, call the AWS translate API to translate the message and then store the result in Dynamodb table.
+
 * `bin/ppe_app.ts`  
 Defines Stacks for Pharmacy and Workshop  
 
