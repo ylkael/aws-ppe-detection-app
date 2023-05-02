@@ -35,7 +35,7 @@ Defines language translator:
 The lambda function will read the message from SNS topic, call the AWS translate API to translate the message and then store the result in Dynamodb table.
 
 * `bin/ppe_app.ts`  
-Defines Stacks for Pharmacy and Workshop  
+Defines Stacks for Pharmacy, Workshop and Translator  
 
 ---
 
