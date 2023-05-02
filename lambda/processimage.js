@@ -85,10 +85,10 @@ exports.handler = async function (event, context) {
           // No head equipment is detected. Should be notified
           else if (head.EquipmentDetections.length <= 0) {
             console.log(
-              "Image does not contain head cover for person " + personcount
+              "Image does not contain head protection for person " + personcount
             );
             message.push(
-              "Image does not contain head cover for person " + personcount
+              "Image does not contain head protection for person " + personcount
             );
           }
         }
@@ -111,10 +111,10 @@ exports.handler = async function (event, context) {
           // No face equipment is detected. Should be notified
           else if (face.EquipmentDetections.length <= 0) {
             console.log(
-              "Image does not contain face cover for person " + personcount
+              "Image does not contain face protection for person " + personcount
             );
             message.push(
-              "Image does not contain face cover for person" + personcount
+              "Image does not contain face protection for person" + personcount
             );
           }
         }
@@ -138,10 +138,10 @@ exports.handler = async function (event, context) {
           // No hand equipment is detected. Should be notified
           else if (hand.EquipmentDetections.length <= 0) {
             console.log(
-              "Image does not contain hand cover for person " + personcount
+              "Image does not contain hand protection for person " + personcount
             );
             message.push(
-              "Image does not contain hand cover for person " + personcount
+              "Image does not contain hand protection for person " + personcount
             );
           }
         }
