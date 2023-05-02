@@ -4,15 +4,13 @@ const translate = new AWS.Translate();
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async function (event, context) {
-  //Read the message from event
-
+  // Read the message from event
   var message = event.Records[0].Sns.Message;
   var snsArn = event.Records[0].Sns.TopicArn;
 
-  console.log("message : ", message, " snsarn : ", snsArn);
+  console.log("Message: ", message, " SnsArn: ", snsArn);
 
-  //call the translation API
-
+  // Call the translation API
   var params = {
     SourceLanguageCode: "en",
     TargetLanguageCode: TRANSLATE_TO,
@@ -21,7 +19,7 @@ exports.handler = async function (event, context) {
   var translatedText = 'Not Available';
 
   const translatoresponse = await translate.translateText(params).promise();
-  console.log('translate response is : '+ JSON.stringify(translatoresponse));
+  console.log('Translate response: '+ JSON.stringify(translatoresponse));
   translatedText = translatoresponse.TranslatedText
 
   var ddbparam = {
@@ -34,7 +32,7 @@ exports.handler = async function (event, context) {
     }
   };
   const dynamodbresponse =  await docClient.put(ddbparam).promise();
-  console.log('ddb response ',JSON.stringify(dynamodbresponse));
+  console.log('Dynamodb response: ',JSON.stringify(dynamodbresponse));
 
   return {
     translatedText
