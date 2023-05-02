@@ -47,6 +47,18 @@ Defines Stacks for Pharmacy, Workshop and Translator.
 
 ## Usage  
 
+If using email set as parameter, deploy **Pharmacy-Stack** and **Workshop-Stack** first with parameter value:  
+
+```code
+cdk deploy PharmacyPpeStack --parameters email=your@email.com WorkshopPpeStack --parameters email=your@email.com
+```
+
+Then deploy the TranslatorStack:  
+
+```code
+cdk deploy TranslatorStack
+```
+
 After deploying the stacks, confirm the subscription emails for Pharmacy and Workshop Topics.  
 
 **Pharmacy-Stack** sends alerts via email if the **face** and/or **hand** cover is **not** detected in the photo.  
