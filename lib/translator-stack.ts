@@ -31,7 +31,7 @@ export class TranslatorStack extends cdk.Stack{
                 count++;
                 const translatorFunction = new lambda.Function(this, 'TranslatorFunction' + count, {
                     runtime: lambda.Runtime.NODEJS_14_X,
-                    handler: 'translate.handler',
+                    handler: 'translator.handler',
                     code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
                 });
                 translatorFunction.addEnvironment('TABLE_NAME', translatortable.tableName);

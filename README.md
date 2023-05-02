@@ -2,7 +2,10 @@
 
 This app detects Personal Protective Equipment (PPE) in the images added in s3 bucket using Amazon Rekognition. SNS email notification will be send if PPE is not detected. Application will have logic to determine what kind of PPE needs to be detected. This includes head cover, face cover and hand cover.  
 
-App uses 2 stacks with different detection rules:  
+There is also a translator stack, which translates the result of image process in selected language set in bin/ppe_app.ts (set as finnish in this template).  
+See all supported languages: <https://docs.aws.amazon.com/pdfs/translate/latest/dg/translate-dg.pdf>  
+
+Stacks:  
 
 1. "Pharmacy"  
 Represents a medical pharmacy.  
@@ -16,6 +19,9 @@ Detects if workers are wearing 3 equipments:
     * Head cover  
     * Face cover  
     * Hand cover  
+
+3. "Translator"  
+Contains DynamoDB table for Translator Results and Lambda Function for translation.
 
 &nbsp;
 
@@ -35,7 +41,7 @@ Defines language translator:
 The lambda function will read the message from SNS topic, call the AWS translate API to translate the message and then store the result in Dynamodb table.
 
 * `bin/ppe_app.ts`  
-Defines Stacks for Pharmacy, Workshop and Translator  
+Defines Stacks for Pharmacy, Workshop and Translator.  
 
 ---
 
@@ -50,6 +56,8 @@ After deploying the stacks, confirm the subscription emails for Pharmacy and Wor
 Upload an image to either Pharmacy-Stack S3-bucket or Workshop-Stack S3-bucket to check if the person is wearing needed equipment.  
 
 If you upload an image with head cover, face cover **and** hand cover you would not get any notification in any stack.  
+
+Navigate to Translator DynamoDB to see the processed results translated into assigned language.  
 
 ---
 
