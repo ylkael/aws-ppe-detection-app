@@ -18,6 +18,8 @@ interface PpeAppStackProps extends cdk.StackProps {
 
 export class PpeAppStack extends cdk.Stack {
   public readonly snsTopic: sns.Topic;
+  public readonly email: cdk.CfnParameter;
+
   constructor(scope: Construct, id: string, props: PpeAppStackProps) {
     super(scope, id, props);
   
@@ -44,11 +46,11 @@ export class PpeAppStack extends cdk.Stack {
     });
     
     // Parameter to specify email address for subscription notifications
-    const email = new cdk.CfnParameter(this, 'email', {
+    this.email = new cdk.CfnParameter(this, 'email', {
       type: 'String',
       description: 'Email address to receive PPE failure notifications'
     });
-    this.snsTopic.addSubscription(new subs.EmailSubscription(email.valueAsString));
+    this.snsTopic.addSubscription(new subs.EmailSubscription(this.email.valueAsString));
 
     // Lambda function to detect PPE
     const processImage = new lambda.Function(this, 'ProcessImageFunction', {
